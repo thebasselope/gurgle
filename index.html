@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>eli's game </title>
-    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    <style>* { padding: 0; margin: 0; } canvas { background: rgb(156, 44, 44); display: block; margin: 0 auto; }</style>
 </head>
 <body>
 
@@ -17,18 +17,18 @@
     var y = canvas.height-30;
     var dx = 2;
     var dy = -2;
-    var paddleHeight = 10;
-    var paddleWidth = 75;
-    var paddleX = (canvas.width-paddleWidth)/2;
+    var paddleHeight = 11;
+    var paddleWidth = 74;
+    var paddleX = (canvas.width-paddleWidth)/1;
     var rightPressed = false;
     var leftPressed = false;
-    var brickRowCount = 5;
-    var brickColumnCount = 3;
-    var brickWidth = 75;
-    var brickHeight = 20;
-    var brickPadding = 10;
-    var brickOffsetTop = 30;
-    var brickOffsetLeft = 30;
+    var brickRowCount = 6;
+    var brickColumnCount = 2;
+    var brickWidth = 50;
+    var brickHeight = 18;
+    var brickPadding = 20;
+    var brickOffsetTop = 35;
+    var brickOffsetLeft = 35;
     var score = 0;
     var lives = 3;
 
@@ -36,14 +36,14 @@
     for(var c=0; c<brickColumnCount; c++) {
         bricks[c] = [];
         for(var r=0; r<brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
+            bricks[c][r] = { x: 2, y: 2, status: 1 };
         }
     }
 
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
     document.addEventListener("mousemove", mouseMoveHandler, false);
-
+    
     function keyDownHandler(e) {
         if(e.keyCode == 39) {
             rightPressed = true;
@@ -59,6 +59,8 @@
         else if(e.keyCode == 37) {
             leftPressed = false;
         }
+    }
+    function goo(e) {
     }
     function mouseMoveHandler(e) {
         var relativeX = e.clientX - canvas.offsetLeft;
@@ -88,7 +90,7 @@
     function drawBall() {
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#0097DD";
         ctx.fill();
         ctx.closePath();
     }
@@ -109,7 +111,7 @@
                     bricks[c][r].y = brickY;
                     ctx.beginPath();
                     ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                    ctx.fillStyle = "#0095DD";
+                    ctx.fillStyle = "#8095DD";
                     ctx.fill();
                     ctx.closePath();
                 }
