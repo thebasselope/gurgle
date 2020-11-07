@@ -10,6 +10,8 @@
 <canvas id="myCanvas" width="480" height="320"></canvas>
 
 <script>
+    'use strict';
+
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     var ballRadius = 10;
@@ -22,6 +24,8 @@
     var paddleX = (canvas.width-paddleWidth)/1;
     var rightPressed = false;
     var leftPressed = false;
+    var upPressed = false;
+    var downPressed = false;
     var brickRowCount = 6;
     var brickColumnCount = 2;
     var brickWidth = 50;
@@ -44,24 +48,37 @@
     document.addEventListener("keyup", keyUpHandler, false);
     document.addEventListener("mousemove", mouseMoveHandler, false);
     
+    var keys = {
+        right: 39,
+        left: 37,
+        up: 38,
+        down: 40,
+    }
+    
+    var setKeyState = (e, val) => {
+        switch(e.keyCode) {
+            case keys.right:
+                rightPressed = val;
+                break;
+            case keys.left:
+                leftPressed = val;
+                break;
+            case keys.up:
+                upPressed = val;
+                break;
+            case keys.down:
+                downPressed = val;
+                break;
+        }
+    }
+
     function keyDownHandler(e) {
-        if(e.keyCode == 39) {
-            rightPressed = true;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = true;
-        }
+        setKeyState(e, true);
     }
     function keyUpHandler(e) {
-        if(e.keyCode == 39) {
-            rightPressed = false;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = false;
-        }
+        setKeyState(e, false);
     }
-    function goo(e) {
-    }
+    
     function mouseMoveHandler(e) {
         var relativeX = e.clientX - canvas.offsetLeft;
         if(relativeX > 0 && relativeX < canvas.width) {
