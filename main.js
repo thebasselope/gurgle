@@ -1,6 +1,11 @@
 'use strict';
 
-var canvas = document.getElementById("myCanvas");
+var body = document.getElementsByTagName('body')[0];
+var canvas = document.createElement('canvas');
+body.appendChild(canvas);
+canvas.width = 800;
+canvas.height = 600;
+
 var ctx = canvas.getContext("2d");
 var ballRadius = 10;
 var ballX = canvas.width/2;
@@ -9,21 +14,22 @@ var dx = 2;
 var dy = -2;
 var paddleHeight = 11;
 var paddleWidth = 74;
-var paddleY = 0; //(paddleHeight*2);
+var paddleY = 0;
 var paddleX = (canvas.width-paddleWidth)/1;
 var rightPressed = false;
 var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
-var brickRowCount = 6;
-var brickColumnCount = 3;
-var brickWidth = 30;
+var enterpressed = false;
+var brickRowCount = 5;
+var brickColumnCount = 4;
+var brickWidth = 80;
 var brickHeight = 25;
-var brickPadding = 35;
+var brickPadding = 65;
 var brickOffsetTop = 40;
 var brickOffsetLeft = 40;
 var score = 0;
-var lives = 3;
+var lives = 5;
 var bricks = [];
 var paused = false;
 
@@ -43,9 +49,10 @@ var keys = {
     left: 37,
     up: 38,
     down: 40,
-    spacebar: 32
-}
-
+    spacebar: 32,
+    enter: 13,
+  }
+    // put in "var ram" that will alow you to ram the ball with the side of the pattle
 var setKeyState = (e, val) => {
     switch(e.keyCode) {
         case keys.right:
@@ -65,6 +72,11 @@ var setKeyState = (e, val) => {
                 paused = !paused;
                 console.log(`Game paused = ${paused}`);
             }
+            //enter will tern patle sideways
+            //the ferst bug will probebly be that the ball will go right throgh it when its moving
+        case keys.enter:
+            enterpressed = val;
+            break;
     }
     //console.log(e.keyCode)
 }
@@ -113,6 +125,7 @@ function drawBall() {
 }
 function drawPaddle() {
     ctx.beginPath();
+    //horizontal
     ctx.rect(paddleX, canvas.height-paddleY-paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
@@ -172,11 +185,9 @@ function draw() {
         (canvas.height-ballY) > paddleY && (canvas.height-ballY) < paddleY + paddleHeight) {
         dy = -dy;
     }
-    // if the ball hits the ceiling, reverse direction
     else if(ballY + dy < ballRadius) {
         dy = -dy;
     }
-    // if the ball hits the floor
     else if(ballY + dy > canvas.height-ballRadius) {
         lives--;
         if(!lives) {
