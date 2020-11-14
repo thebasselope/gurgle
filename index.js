@@ -52,7 +52,7 @@ var keys = {
     spacebar: 32,
     enter: 13,
   }
-    // put in "var ram" that will alow you to ram the ball with the side of the pattle
+    // put in var that will alow you to ram the ball with the side of the pattle
 var setKeyState = (e, val) => {
     switch(e.keyCode) {
         case keys.right:
@@ -151,7 +151,7 @@ function drawBricks() {
 function drawScore() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#8095DD";
-    ctx.fillText("Score: "+score, 8, 20);
+    ctx.fillText("No Score: "+score, 8, 20);
 }
 function drawLives() {
     ctx.font = "16px Arial";
@@ -181,8 +181,8 @@ function draw() {
     // if the ball is within the X-bounds of the paddle AND
     // if the ball is within the Y-bounds of the paddle,
     // THEN we have made contact with the paddle AND reverse direction
-    if(ballX > paddleX && ballX < paddleX + paddleWidth &&
-        (canvas.height-ballY) > paddleY && (canvas.height-ballY) < paddleY + paddleHeight) {
+    if(ballX >= paddleX && ballX <= paddleX + paddleWidth &&
+        (canvas.height-ballY) >= paddleY && (canvas.height-ballY) <= paddleY + paddleHeight) {
         dy = -dy;
     }
     else if(ballY + dy < ballRadius) {
