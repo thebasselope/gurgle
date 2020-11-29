@@ -5,8 +5,8 @@ export const getGameCanvas = () => {
     canvas = document.createElement('canvas');
     canvas.id = 'gurgle_canvas';
     body.appendChild(canvas);
-    canvas.width = 800;
-    canvas.height = 600;
+    canvas.width = 600;
+    canvas.height = 400;
   }
 
   return canvas;

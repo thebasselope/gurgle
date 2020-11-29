@@ -12,13 +12,13 @@ const collisionDetection = (game) => {
                     ball.directionY = -ball.directionY;
                     b.status = 0;
                     game.score += 1;
-                  if (game.score == brick.rowCount * brick.columnCount) {
-                      if (confirm('YOU WIN, this time...Play again?')) {
-                          document.location.reload();
-                      } else {
-                          return;
-                      }
-                  }
+                  // if (game.score == brick.rowCount * brick.columnCount) {
+                  //     if (confirm('YOU WIN, this time...Play again?')) {
+                  //         document.location.reload();
+                  //     } else {
+                  //         return;
+                  //     }
+                  // }
               }
           }
       }
@@ -94,10 +94,11 @@ const drawLives = (ctx, canvas, game) => {
 
 export const reRender = (ctx, canvas, game) => {
   try {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionDetection(game);
     drawBall(ctx, game);
     drawPaddle(ctx, canvas, game);
-    drawGridLines(ctx, canvas);
+    //drawGridLines(ctx, canvas);
     drawBricks(ctx, game);
     drawScore(ctx, game);
     drawLives(ctx, canvas, game);

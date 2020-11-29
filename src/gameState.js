@@ -3,7 +3,8 @@ import { getGameCanvas }  from './canvas.js';
 const canvas = getGameCanvas();
 const ctx =  canvas.getContext('2d');
 
-export const gameState = {
+export const getNewGameState = () => {
+  const newGameState = {
     canvas,
     ctx,
     score: 0,
@@ -13,8 +14,8 @@ export const gameState = {
       radius: 10,
       x: canvas.width/2,
       y: canvas.height-30,
-      directionX: 1,
-      directionY: -1,
+      directionX: 2,
+      directionY: -2,
     },
     brick: {
       rowCount: 5,
@@ -26,7 +27,7 @@ export const gameState = {
       offsetLeft: 40,
     },
     paddle: {
-      height: 20,
+      height: 15,
       width:74,
       y: 0,
       x: canvas.width-74,
@@ -46,13 +47,17 @@ export const gameState = {
       spacebar: 32,
       enter: 13,
     },
+  };
+
+  for (let c=0; c < newGameState.brick.columnCount; c += 1) {
+    newGameState.bricks[c] = [];
+    for(let r=0; r < newGameState.brick.rowCount; r += 1) {
+      newGameState.bricks[c][r] = { ball: { x: 2, y: 2 }, status: 1 };
+    }
+  }
+  return newGameState;
 }
 
-for (let c=0; c < gameState.brick.columnCount; c += 1) {
-  gameState.bricks[c] = [];
-  for(let r=0; r < gameState.brick.rowCount; r += 1) {
-      gameState.bricks[c][r] = { ball: { x: 2, y: 2 }, status: 1 };
-  }
-}
+export const gameState = getNewGameState();
 
 export default gameState;

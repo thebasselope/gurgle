@@ -1,6 +1,6 @@
 
 const setKeyState = (e, val, gameState) => {
-  const { keyMap, keyState, paddle } = gameState;
+  const { keyMap, keyState, paddle, ball } = gameState;
   switch(e.keyCode) {
         case keyMap.right:
             keyState.right = val;

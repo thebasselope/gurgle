@@ -1,60 +1,81 @@
-// const testimpact = (ballX,paddleX,paddleWidth,canvasHeight,paddleY,ballY,paddleHeight) => {
-//   if(ballX > paddleX && ballX < paddleX + paddleWidth &&
-//     (canvasHeight-ballY) > paddleY && (canvasHeight-ballY) < paddleY + paddleHeight) {
-//     console.log(true)
-//   } else {
-//     console.log(false)
-//   }
-// }
-// testimpact(21,20,30,100,50,50,10)
+import { reRender } from './src/draw.js';
+import { isBallTouchingPaddle } from './src/paddle.js';
+import { getNewGameState } from './src/gameState.js';
 
-const testImpact2 = (game) => {
-  const { ball, paddle, canvas } = game;
-
-  const matchOnX = (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width);
-  const matchOnY_1 = canvas.height - ball.y >= paddle.y;
-  const matchOnY_2 = canvas.height - ball.y <= paddle.y + paddle.height;
-  const matchOnY = matchOnY_1 && matchOnY_2;
-
-  const isMatched = matchOnX && matchOnY;
-  console.log(isMatched);
-  return isMatched;
-}
-
-// Succeeds
-testImpact2({
+const testSuite = [{
   ball: {
     x: 21,
-    y: 50,
-    radius: 10,
+    y: 190,
   },
   paddle: {
     x: 20,
-    y: 40,
-    height:10,
-    width:30,
+    y: 178,
   },
-  canvas:{
-    height:100,
-    width:100,
-  },
-});
+}];
 
-// Fails
-testImpact2({
+/*
+{
   ball: {
     x: 5,
     y: 5,
-    radius: 10,
   },
   paddle: {
     x: 20,
     y: 40,
-    height:10,
-    width:30,
   },
-  canvas:{
-    height:100,
-    width:100,
-  },
-});
+}
+*/
+
+var testResults = [];
+
+const sleep = async(ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const testFrame = async(test) => {
+  const game = getNewGameState();
+  game.bricks = []
+  game.brick.columnCount = 0;
+  game.brick.rowCount = 0;
+  const { canvas, ctx, paddle, ball } = game;
+
+  _.merge(game,test);
+
+  reRender(ctx, canvas, game);
+
+  const isTouching = isBallTouchingPaddle(game);
+
+  testResults.push({isTouching, paddle, ball})
+  console.log({isTouching, paddle, ball})
+  await sleep(500);
+}
+
+const isPaddleInBounds = (paddle) => {
+  return paddle.y > 0 && paddle.y < 600 && paddle.x > 0 && paddle.x < 800;
+}
+
+const isBallInBounds = (ball) => {
+  return ball.y > 0 && ball.y < 600 && ball.x > 0 && ball.x < 800;
+}
+
+testSuite.forEach( async(test) => {
+  await testFrame(test);
+  const subTest = _.merge({}, test);
+  let i = 0;
+  while(i < 40) {
+          subTest.ball.y += 1;
+          subTest.paddle.y += 1;
+          await testFrame(subTest);
+          i += 1
+        }
+
+        /**
+         * isBallInBounds(subTest.ball) &&
+        isPaddleInBounds(subTest.paddle)
+         */
+})
+
+window.testResults = testResults
+console.log(testResults)
+
+
